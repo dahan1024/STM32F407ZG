@@ -1,0 +1,5 @@
+SERIAL_ROUTER_SRC V00.01A
+2019/12/23
+1.This should be considered a completed version. 
+Now we can control gps and odu.
+All bugs have been debugged. It passed the test.

@@ -26,6 +26,8 @@ int32_t fpga_set_pac_id(uint8_t pac_id);
 
 int32_t fpga_get_pac_id(uint8_t *pac_id_p);
 
+int32_t fpga_get_mac(uint8_t mac[6]);
+
 int32_t fpga_set_monitor_ver(void);
 
 #endif /* PERIPH_FPGA_FPGA_H_ */

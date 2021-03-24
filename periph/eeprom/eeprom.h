@@ -32,6 +32,10 @@ typedef struct EepromConfig
 
 	uint8_t reserved0[2];
 
+    /** link level hardware address of pc */
+    u8_t pc_hwaddr[6];
+	uint8_t reserved1[2];
+
     uint32_t crcAtEnd[1];
 
 } EepromConfig_t;
@@ -51,6 +55,10 @@ int32_t eeprom_write(EepromConfig_t *eeprom_config_p);
 int32_t eeprom_get_pac_id(uint8_t *pac_id_p);
 
 int32_t eeprom_set_pac_id(uint8_t pac_id);
+
+int32_t eeprom_get_pc_hwaddr(uint8_t pc_hwaddr[6]);
+
+int32_t eeprom_set_pc_hwaddr(uint8_t pc_hwaddr[6]);
 
 #endif /* PERIPH_EEPROM_EEPROM_H_ */
 

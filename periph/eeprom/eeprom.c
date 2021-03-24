@@ -197,7 +197,11 @@ static int32_t eeprom_check_first_time(BOOL eeprom_reset)
 
         cur_eeprom_config.pac_id = 0x00;
 
-        memset((void *)&(cur_eeprom_config.reserved0), 0, sizeof(cur_eeprom_config.reserved0));
+        memset((void *)(cur_eeprom_config.reserved0), 0, sizeof(cur_eeprom_config.reserved0));
+
+        memset((void *)(cur_eeprom_config.pc_hwaddr), 0, sizeof(cur_eeprom_config.pc_hwaddr));
+
+        memset((void *)(cur_eeprom_config.reserved1), 0, sizeof(cur_eeprom_config.reserved1));
 
         ret = eeprom_write_cur(&cur_eeprom_config);
         if (ret)
@@ -289,6 +293,56 @@ int32_t eeprom_set_pac_id(uint8_t pac_id) {
 
 	return 0;
 }
+
+// pc_hwaddr
+int32_t eeprom_get_pc_hwaddr(uint8_t pc_hwaddr[6]) {
+	EepromConfig_t eeprom_config;
+	int32_t rc;
+
+	rc = eeprom_read(&eeprom_config);
+	if (rc)
+	{
+		error("Read eeprom failed\n");
+		return rc;
+	}
+
+	memcpy((void *)pc_hwaddr, (const void *)eeprom_config.pc_hwaddr, 6);
+
+	return 0;
+}
+
+int32_t eeprom_set_pc_hwaddr(uint8_t pc_hwaddr[6]) {
+	EepromConfig_t eeprom_config;
+	int32_t rc;
+
+	rc = eeprom_read(&eeprom_config);
+	if (rc)
+	{
+		error("read eeprom failed\n");
+		return rc;
+	}
+
+	memcpy((void *)eeprom_config.pc_hwaddr, (const void *)pc_hwaddr, 6);
+
+	rc = eeprom_write(&eeprom_config);
+	if (rc)
+	{
+		error("Write eeprom failed\n");
+		return rc;
+	}
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

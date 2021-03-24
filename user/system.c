@@ -15,6 +15,8 @@
 #include <eeprom.h>
 #include <fpga.h>
 #include <w25qxx.h>
+#include <malloc.h>
+#include <lwip_comm.h>
 
 static int32_t init_fpga(void);
 
@@ -40,9 +42,21 @@ void system_init(void)
 	fpga_init();
 	w25qxx_init();
 
+	mymem_init(SRAMIN);		//初始化内部内存
+	mymem_init(SRAMEX);		//初始化外部内存
+	mymem_init(SRAMCCM);	//初始化CCM内存池
+
 	// initialize pac id
 	delay_ms(1000);
 	init_fpga();
+
+	printf("lwIP Initing...\r\n");
+	if (lwip_comm_init() != 0)
+	{
+		printf("lwIP Init failed!\r\n");
+	}
+
+	printf("lwIP initialization done\r\n");
 }
 
 static int32_t init_fpga(void)

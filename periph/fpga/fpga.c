@@ -22,6 +22,13 @@
 
 #define FPGA_REG_ADDR_PAC_ID			0x0002
 
+#define FPGA_REG_ADDR_MAC_47_40			0x8100
+#define FPGA_REG_ADDR_MAC_39_32			0x8101
+#define FPGA_REG_ADDR_MAC_31_24			0x8102
+#define FPGA_REG_ADDR_MAC_23_16			0x8103
+#define FPGA_REG_ADDR_MAC_15_08			0x8104
+#define FPGA_REG_ADDR_MAC_07_00			0x8105
+
 #define FPGA_REG_ADDR_MONITOR_VER_0		0x9010
 #define FPGA_REG_ADDR_MONITOR_VER_7		0x9017
 
@@ -116,6 +123,32 @@ int32_t fpga_get_pac_id(uint8_t *pac_id_p) {
 	{
 		error("Read fpga failed\n");
 		return rc;
+	}
+
+	return 0;
+}
+
+// fpga mac
+int32_t fpga_get_mac(uint8_t mac[6]) {
+	uint16_t reg_addr_list[6];
+	int32_t rc;
+	int32_t i;
+
+	reg_addr_list[0] = FPGA_REG_ADDR_MAC_47_40;
+	reg_addr_list[1] = FPGA_REG_ADDR_MAC_39_32;
+	reg_addr_list[2] = FPGA_REG_ADDR_MAC_31_24;
+	reg_addr_list[3] = FPGA_REG_ADDR_MAC_23_16;
+	reg_addr_list[4] = FPGA_REG_ADDR_MAC_15_08;
+	reg_addr_list[5] = FPGA_REG_ADDR_MAC_07_00;
+
+	for (i = 0; i < 6; i++)
+	{
+		rc = fpga_read(reg_addr_list[i], &mac[i]);
+		if (rc)
+		{
+			error("Read fpga failed\n");
+			return rc;
+		}
 	}
 
 	return 0;
